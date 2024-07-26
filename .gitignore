@@ -50,3 +50,9 @@ package.tgz
 .idea
 
 coverage
+
+.next
+.next/*
+.next/**
+.next/**/
+.next/**/*
