@@ -13,4 +13,21 @@ defineFeature(feature, (test) => {
       expect(steps.areAllCardsEnabled()).toBe(true)
     })
   })
+
+  test('Uncovering a card using left mouse click - Checking that its uncovered', ({ given, when, then, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, (rowPosition, colPosition) => {
+      expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+    })
+  })
 })
