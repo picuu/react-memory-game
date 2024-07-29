@@ -1,0 +1,19 @@
+.card {
+  display: grid;
+  place-content: center;
+  aspect-ratio: 8 / 10;
+  width: 200px;
+  padding: 2rem 1rem;
+  background-color: transparent;
+  border: 1px solid rgba(0 0 0 / .5);
+  transition:
+    transform .4s ease-in-out,
+    background-color .4s ease-in-out,
+    color .4s ease-in-out;
+}
+
+.card.covered {
+  background-color: #09f;
+  color: #09f;
+  transform: rotateY(180deg);
+}
