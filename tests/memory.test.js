@@ -30,4 +30,21 @@ defineFeature(feature, (test) => {
       expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
     })
   })
+
+  test('Uncovering a card - Checking its value', ({ given, when, then, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should show: "(.*)"$/, (rowPosition, colPosition, cardValue) => {
+      expect(steps.getCardValue(rowPosition, colPosition)).toBe(cardValue)
+    })
+  })
 })
