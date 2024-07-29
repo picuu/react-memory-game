@@ -70,4 +70,27 @@ defineFeature(feature, (test) => {
       expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
     })
   })
+
+  test('Uncovering two cards - Different value on each card', ({ given, when, then, and, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should show: "(.*)"$/, (rowPosition, colPosition, cardValue) => {
+      expect(steps.getCardValue(rowPosition, colPosition)).toBe(cardValue)
+    })
+    and(/^the card \("(.*)","(.*)"\) should show: "(.*)"$/, (rowPosition, colPosition, cardValue) => {
+      expect(steps.getCardValue(rowPosition, colPosition)).toBe(cardValue)
+    })
+  })
 })
