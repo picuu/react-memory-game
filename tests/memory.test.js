@@ -47,4 +47,27 @@ defineFeature(feature, (test) => {
       expect(steps.getCardValue(rowPosition, colPosition)).toBe(cardValue)
     })
   })
+
+  test('Uncovering two cards - Checking both to be uncovered', ({ given, when, then, and, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, (rowPosition, colPosition) => {
+      expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, (rowPosition, colPosition) => {
+      expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+    })
+  })
 })
