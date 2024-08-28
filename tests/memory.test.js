@@ -1,4 +1,5 @@
 import { loadFeature, defineFeature } from 'jest-cucumber'
+import { waitFor } from '@testing-library/react'
 import * as steps from './steps/memory.steps'
 
 const feature = loadFeature('./tests/features/memory.core.feature')
@@ -91,6 +92,40 @@ defineFeature(feature, (test) => {
     })
     and(/^the card \("(.*)","(.*)"\) should show: "(.*)"$/, (rowPosition, colPosition, cardValue) => {
       expect(steps.getCardValue(rowPosition, colPosition)).toBe(cardValue)
+    })
+  })
+
+  test('Uncovering three differents cards - Only the last one should be uncovered', ({ given, when, then, and }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^after "(.*)" seconds the player left clicks the card \("(.*)","(.*)"\)$/, async (seconds, rowPosition, colPosition) => {
+      await new Promise(resolve => setTimeout(resolve, Number(seconds) * 1000))
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should be "covered" after "(.*)" seconds$/, async (rowPosition, colPosition, seconds) => {
+      await waitFor(() => {
+        expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(false)
+      })
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "covered" after "(.*)" seconds$/, async (rowPosition, colPosition, seconds) => {
+      await waitFor(() => {
+        expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(false)
+      })
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, (rowPosition, colPosition) => {
+      expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
     })
   })
 })

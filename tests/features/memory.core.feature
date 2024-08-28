@@ -88,6 +88,19 @@ Scenario: Uncovering two cards - Different value on each card
   Then the card ("1","1") should show: "a"
   And the card ("1","2") should show: "b"
 
+Scenario: Uncovering three differents cards - Only the last one should be uncovered
+  Given the player loads the following mock data:
+  """
+  | a | b |
+  | a | b |
+  """
+  When the player left clicks the card ("1","1")
+  And the player left clicks the card ("1","2")
+  And after "2" seconds the player left clicks the card ("2","1")
+  Then the card ("1","1") should be "covered" after "2" seconds
+  And the card ("1","2") should be "covered" after "2" seconds
+  And the card ("2","1") should be "uncovered"
+
 Scenario: Uncovering a pair - Wait for it to be covered
   Given the player loads the following mock data:
   """

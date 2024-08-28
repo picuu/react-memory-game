@@ -45,6 +45,11 @@ export function isCardUncovered (rowPosition, colPosition) {
   return !card.classList.contains('covered')
 }
 
+export function isCardCovered (rowPosition, colPosition) {
+  const card = screen.getByTestId(`card card-row${rowPosition}-col${colPosition}`, { exact: true })
+  return card.classList.contains('covered')
+}
+
 export function getCardValue (rowPosition, colPosition) {
   const card = screen.getByTestId(`card card-row${rowPosition}-col${colPosition}`, { exact: true })
   return card.textContent
