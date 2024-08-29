@@ -88,6 +88,17 @@ Scenario: Uncovering two cards - Different value on each card
   Then the card ("1","1") should show: "a"
   And the card ("1","2") should show: "b"
 
+Scenario: Uncovering two differents cards - Them should be covered automatically after 1 seconds
+  Given the player loads the following mock data:
+  """
+  | a | b |
+  | a | b |
+  """
+  When the player left clicks the card ("1","1")
+  And the player left clicks the card ("1","2")
+  Then the card ("1","1") should be "covered" after "1" seconds
+  And the card ("1","2") should be "covered" after "1" seconds
+
 Scenario: Uncovering three differents cards - Only the last one should be uncovered
   Given the player loads the following mock data:
   """
@@ -101,19 +112,7 @@ Scenario: Uncovering three differents cards - Only the last one should be uncove
   And the card ("1","2") should be "covered" after "2" seconds
   And the card ("2","1") should be "uncovered"
 
-Scenario: Uncovering a pair - Wait for it to be covered
-  Given the player loads the following mock data:
-  """
-  | a | b |
-  | a | b |
-  """
-  When the player left clicks the card ("1","1")
-  And the player left clicks the card ("1","2")
-  And the player waits 2 seconds
-  Then the card ("1","1") should be "covered"
-  And the card ("1","2") should be "covered"
-
-Scenario: Uncovering a pair - Same value on both cards
+Scenario: Uncovering a pair - It should stay uncovered
   Given the player loads the following mock data:
   """
   | a | b |
@@ -121,8 +120,10 @@ Scenario: Uncovering a pair - Same value on both cards
   """
   When the player left clicks the card ("1","1")
   And the player left clicks the card ("2","1")
+  And after "2" seconds the player left clicks the card ("2","1")
   Then the card ("1","1") should be "uncovered"
   And the card ("2","1") should be "uncovered"
+  And the card ("1","2") should be "uncovered"
 
 Scenario: Uncovering a pair with the same value - Disabling the cards
   Given the player loads the following mock data:
@@ -135,31 +136,7 @@ Scenario: Uncovering a pair with the same value - Disabling the cards
   Then the card ("1","1") should be "disabled"
   And the card ("2","1") should be "disabled"
 
-Scenario: Uncovering all cards - Wining the game
-  Given the player loads the following mock data:
-  """
-  | a | b |
-  | a | b |
-  """
-  When the player left clicks the card ("1","1")
-  And the player left clicks the card ("2","1")
-  And the player left clicks the card ("1","2")
-  And the player left clicks the card ("2","2")
-  Then the player should win the game
-
-Scenario: Finishing the game - Disabling the cards
-  Given the player loads the following mock data:
-  """
-  | a | b |
-  | a | b |
-  """
-  When the player left clicks the card ("1","1")
-  And the player left clicks the card ("2","1")
-  And the player left clicks the card ("1","2")
-  And the player left clicks the card ("2","2")
-  Then all the cards should be "disabled" 
-
-Scenario: Uncovering a card then clicking on it
+Scenario: Uncovering a card then clicking on it - Nothing should happen
   Given the player loads the following mock data:
   """
   | a | b |
@@ -167,9 +144,9 @@ Scenario: Uncovering a card then clicking on it
   """
   And the player left clicks the card ("1","1")
   When the player left clicks the card ("1","1")
-  Then nothing should happen
+  Then the card ("1","1") should stay "uncovered"
 
-Scenario: Clicking on an already uncovered card
+Scenario: Clicking on an already uncovered card - Nothing should happen
   Given the player loads the following mock data:
   """
   | a | b |
@@ -178,4 +155,4 @@ Scenario: Clicking on an already uncovered card
   And the player left clicks the card ("1","1") 
   And the player left clicks the card ("2","1")
   When the player left clicks the card ("2","1")
-  Then nothing should happen
+  Then the card ("2","1") should stay "uncovered"

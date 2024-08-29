@@ -151,4 +151,24 @@ defineFeature(feature, (test) => {
       expect(steps.isCardEnabled(rowPosition, colPosition)).toBe(false)
     })
   })
+
+  test('Uncovering a card then clicking on it - Nothing should happen', ({ given, when, then, and, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should stay "uncovered"$/, (rowPosition, colPosition) => {
+      expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+    })
+  })
 })
