@@ -54,3 +54,8 @@ export function getCardValue (rowPosition, colPosition) {
   const card = screen.getByTestId(`card card-row${rowPosition}-col${colPosition}`, { exact: true })
   return card.textContent
 }
+
+export function isCardEnabled (rowPosition, colPosition) {
+  const card = screen.getByTestId(`card card-row${rowPosition}-col${colPosition}`, { exact: true })
+  return !card.classList.contains('disabled')
+}

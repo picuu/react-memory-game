@@ -17,7 +17,8 @@ export function formatMockData (data) {
         rowPos: rowIndex + 1,
         colPos: colIndex + 1,
         isCovered: true,
-        isEnabled: true
+        isEnabled: true,
+        isPaired: false
       })
     })
   })

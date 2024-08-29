@@ -5,6 +5,7 @@ import { Card } from '@/components/Card.jsx'
 export function Board ({ boardData }) {
   const [cardsBoard, setCardsBoard] = useState(boardData)
   const uncoveredCards = useRef(0)
+  const [lastUncoveredCard, setLastUncoveredCard] = useState(null)
 
   useEffect(() => {
     setCardsBoard(boardData)
@@ -14,6 +15,7 @@ export function Board ({ boardData }) {
     const newCardsBoard = [...cardsBoard]
     const clickedCard = newCardsBoard[rowPos - 1][colPos - 1]
 
+    if (clickedCard.isPaired) return
     if (!clickedCard.isEnabled) return
     if (uncoveredCards.current === 2) return
 
@@ -21,6 +23,12 @@ export function Board ({ boardData }) {
     clickedCard.isEnabled = false
     uncoveredCards.current++
 
+    if (lastUncoveredCard !== null && lastUncoveredCard.value === clickedCard.value) {
+      clickedCard.isPaired = true
+      lastUncoveredCard.isPaired = true
+    }
+
+    setLastUncoveredCard(clickedCard)
     setCardsBoard(newCardsBoard)
   }
 
@@ -28,8 +36,10 @@ export function Board ({ boardData }) {
     const newCardsBoard = [...cardsBoard]
     newCardsBoard.forEach(row => {
       row.forEach(card => {
-        card.isCovered = true
-        card.isEnabled = true
+        if (!card.isPaired) {
+          card.isCovered = true
+          card.isEnabled = true
+        }
       })
     })
     setCardsBoard(newCardsBoard)
@@ -40,6 +50,7 @@ export function Board ({ boardData }) {
       setTimeout(() => {
         coverAllCards()
         uncoveredCards.current = 0
+        setLastUncoveredCard(null)
       }, 1000)
     }
   }, [uncoveredCards.current])
@@ -58,6 +69,7 @@ export function Board ({ boardData }) {
                   colPos={card.colPos}
                   isCovered={card.isCovered}
                   isEnabled={card.isEnabled}
+                  isPaired={card.isPaired}
                   onClick={handleClick}
                 />
               ))
