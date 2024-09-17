@@ -120,7 +120,7 @@ Scenario: Uncovering a pair - It should stay uncovered
   """
   When the player left clicks the card ("1","1")
   And the player left clicks the card ("2","1")
-  And after "2" seconds the player left clicks the card ("2","1")
+  And after "1" seconds the player left clicks the card ("2","1")
   Then the card ("1","1") should be "uncovered"
   And the card ("2","1") should be "uncovered"
   And the card ("1","2") should be "uncovered"

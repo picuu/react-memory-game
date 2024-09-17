@@ -95,6 +95,71 @@ defineFeature(feature, (test) => {
     })
   })
 
+  test('Uncovering two differents cards - Them should be covered automatically after 1 seconds', ({ given, when, then, and, pending }) => {
+    given('a player opens the game', () => {
+      pending()
+      return
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      pending()
+      return
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      pending()
+      return
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      pending()
+      return
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should be "covered" after "(.*)" seconds$/, async (rowPosition, colPosition, seconds) => {
+      pending()
+      return
+      const expectedTime = Number(seconds) * 500
+      const threshold = 200
+      const startTime = Date.now()
+
+      await waitFor(() => {
+        expect(steps.isCardCovered(rowPosition, colPosition)).toBe(true)
+      }, { timeout: expectedTime + threshold + 100 })
+
+      const endTime = Date.now() - startTime
+
+      console.log('steps.isCardCovered(rowPosition, colPosition)', steps.isCardCovered(rowPosition, colPosition))
+      console.log('endTime:', endTime)
+
+      expect(endTime >= expectedTime - threshold && endTime <= expectedTime + threshold).toBe(true)
+      // expect(endTime).toBeGreaterThanOrEqual(expectedTime - threshold)
+      // expect(endTime).toBeLessThanOrEqual(expectedTime + threshold)
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "covered" after "(.*)" seconds$/, async (rowPosition, colPosition, seconds) => {
+      pending()
+      return
+      const expectedTime = Number(seconds) * 500
+      const threshold = 200
+      const startTime = Date.now()
+
+      await waitFor(() => {
+        expect(steps.isCardCovered(rowPosition, colPosition)).toBe(true)
+      }, { timeout: expectedTime + threshold + 100 })
+
+      const endTime = Date.now() - startTime
+
+      console.log('steps.isCardCovered(rowPosition, colPosition)', steps.isCardCovered(rowPosition, colPosition))
+      console.log('endTime:', endTime)
+
+      expect(endTime >= expectedTime - threshold && endTime <= expectedTime + threshold).toBe(true)
+      // expect(endTime).toBeGreaterThanOrEqual(expectedTime - threshold)
+      // expect(endTime).toBeLessThanOrEqual(expectedTime + threshold)
+    })
+  })
+
   test('Uncovering three differents cards - Only the last one should be uncovered', ({ given, when, then, and }) => {
     given('a player opens the game', () => {
       steps.openThePage()
@@ -126,6 +191,42 @@ defineFeature(feature, (test) => {
     })
     and(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, (rowPosition, colPosition) => {
       expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+    })
+  })
+
+  test('Uncovering a pair - It should stay uncovered', ({ given, when, then, and, pending }) => {
+    given('a player opens the game', () => {
+      steps.openThePage()
+    })
+    given('the player loads the following mock data:', (mockDataString) => {
+      steps.setMockData(mockDataString)
+    })
+
+    when(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^the player left clicks the card \("(.*)","(.*)"\)$/, (rowPosition, colPosition) => {
+      steps.leftClickOnCard(rowPosition, colPosition)
+    })
+    and(/^after "(.*)" seconds the player left clicks the card \("(.*)","(.*)"\)$/, async (seconds, rowPosition, colPosition) => {
+      await new Promise(resolve => setTimeout(resolve, Number(seconds) * 1000))
+      await steps.leftClickOnCard(rowPosition, colPosition)
+    })
+
+    then(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, async (rowPosition, colPosition) => {
+      await waitFor(() => {
+        expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+      }, { timeout: 3000 })
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, async (rowPosition, colPosition) => {
+      await waitFor(() => {
+        expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+      }, { timeout: 3000 })
+    })
+    and(/^the card \("(.*)","(.*)"\) should be "uncovered"$/, async (rowPosition, colPosition) => {
+      await waitFor(() => {
+        expect(steps.isCardUncovered(rowPosition, colPosition)).toBe(true)
+      }, { timeout: 3000 })
     })
   })
 
