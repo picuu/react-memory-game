@@ -7,7 +7,7 @@ import { formatMockData } from '@/helpers/formatMockData.js'
 
 export function Game () {
   const [mockDataFormVisible, setMockDataFormVisible] = useState(false)
-  const [mockData, setMockData] = useState(formatMockData('aa-bb'))
+  const [mockData, setMockData] = useState(formatMockData('aecd-feaf-cdbb'))
 
   // TODO: getRandomMockData() and use in mockData state
 
@@ -27,6 +27,8 @@ export function Game () {
 
   return (
     <main>
+      <h1>MEMORY GAME</h1>
+      
       <section>
         {mockDataFormVisible && <MockDataForm setMockData={setMockData} />}
       </section>

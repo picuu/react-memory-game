@@ -1,19 +1,37 @@
 .card {
+  position: relative;
   display: grid;
   place-content: center;
-  aspect-ratio: 8 / 10;
-  width: 200px;
+  aspect-ratio: 1;
+  width: 160px;
   padding: 2rem 1rem;
-  background-color: transparent;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  background-color: #09f;
   border: 1px solid rgba(0 0 0 / .5);
+  border-radius: .5rem;
   transition:
     transform .4s ease-in-out,
     background-color .4s ease-in-out,
     color .4s ease-in-out;
+  user-select: none;
+  cursor: default;
 }
 
 .card.covered {
-  background-color: #09f;
-  color: #09f;
+  background-color: rgb(5, 90, 200);
+  color: rgb(5, 90, 200);
   transform: rotateY(180deg);
+  cursor: pointer;
+}
+
+.card.value-a {
+  color: crimson;
+}
+
+.card.value-a {
+  color: crimson;
 }
